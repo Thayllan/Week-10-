@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require ('mongoose');
+const cors = require ('cors');
 const routes = require ('./routes');
 
 const app = express();
@@ -10,6 +11,7 @@ mongoose.connect('mongodb+srv://Thayllan:Thay@radar-8fwn5.mongodb.net/week10?ret
   useFindAndModify: false,
   useCreateIndex: true,
 });
+app.use(cors({origin: 'http://localhost:3000'}))
 app.use(express.json());
 app.use(routes);
 
