@@ -4,7 +4,7 @@ import MapView, { Marker, Callout } from 'react-native-maps';
 import { requestPermissionsAsync, getCurrentPositionAsync} from 'expo-location';
 import {MaterialIcons} from '@expo/vector-icons';
 
-import api from '../Services/Api'; 
+import api from '../Services/api'; 
 
 function Main({ navigation }) {
   const [devs,setDevs] = useState([]);
@@ -31,20 +31,20 @@ function Main({ navigation }) {
   },[]);
 
   async function loadDevs () {
-    const { latitude, longitude } =currentRegion;
-
-    const response = await api.get('/search',{
+    const { latitude, longitude } = currentRegion;
+    const response = await api.get('/search', {
       params: {
         latitude,
         longitude,
-        techs
+        techs,
       }
     });
     setDevs(response.data.devs);
+    console.log(response.data.devs.techs);
+    
   }
 
-  function handleRegionChanged(region) {
-    console.log(region);  
+  function handleRegionChanged(region) {  
     setCurrentRegion(region);
 
   }
@@ -62,7 +62,8 @@ function Main({ navigation }) {
       >
       {devs.map(dev=>(
         <Marker
-        key = {dev._id} 
+        key = {dev._id}
+         
         coordinate = {{
           latitude: dev.location.coordinates[1], 
           longitude: dev.location.coordinates[0]
@@ -94,7 +95,7 @@ function Main({ navigation }) {
       value = {techs}
       onChangeText={setTechs}
       />
-    <TouchableOpacity onPress={()=>{}}  style={styles.loadButton}>
+    <TouchableOpacity onPress={loadDevs}  style={styles.loadButton}>
       <MaterialIcons name="my-location" size={20} color={"#FFF"} />
     </TouchableOpacity>
     </View>
